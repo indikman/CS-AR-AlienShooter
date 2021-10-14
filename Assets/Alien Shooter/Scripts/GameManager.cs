@@ -47,6 +47,9 @@ public class GameManager : MonoBehaviour
         Health = 10;
         isRunning = true;
         StartCoroutine(spawnEnemy());
+
+
+        healthText.text = "HEALTH\n" + Health;
     }
 
     IEnumerator spawnEnemy()
@@ -108,7 +111,7 @@ public class GameManager : MonoBehaviour
     {
         Health--;
         //Update health UI
-        healthText.text = "HEALTH\n" + Score;
+        healthText.text = "HEALTH\n" + Health;
 
         if (Health <= 0)
         {
