@@ -6,7 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+    path: Assets/Scenes/Alien Shooter.unity
+    guid: b7098643dae08c64188823c6549e58e3
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 707785cf633ee4043bf5aaefcca48826, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c1056f272bf4c0d488514603dea92021, type: 2}
