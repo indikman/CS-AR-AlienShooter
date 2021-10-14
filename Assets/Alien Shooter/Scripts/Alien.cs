@@ -9,6 +9,7 @@ public class Alien : MonoBehaviour
     public float speed = 100;
 
     private Transform player;
+    private GameManager manager;
 
     private void Start()
     {
@@ -16,10 +17,11 @@ public class Alien : MonoBehaviour
         alienMesh.material = colours[Random.Range(0, colours.Length)];
     }
 
-    public void SetPlayer(Transform _player)
+    public void SetPlayer(Transform _player, GameManager _manager)
     {
         //Setting the target for the alien
         player = _player;
+        manager = _manager;
     }
 
     
@@ -30,6 +32,17 @@ public class Alien : MonoBehaviour
         {
             transform.LookAt(player);
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("player"))
+        {
+            manager.GetDamage();
+            Debug.Log("DIE!");
+            Destroy(gameObject);
+
         }
     }
 }

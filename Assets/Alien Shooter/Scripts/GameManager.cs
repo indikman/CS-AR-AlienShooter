@@ -1,16 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Gameplay elements")]
     public BoxCollider spawnBoundBox;
     public GameObject alienPrefab;
     public Transform shootPoint;
     public GameObject hitParticle;
     public Transform player;
-
     public GameObject laser;
+
+    [Header("UI")]
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI finalScoreText;
+    public GameObject GameOverUI;
+    public GameObject GameplayUI;
+
+    [Header("Audio")]
+    public AudioSource gunAudio;
+    public AudioSource explosionAudio;
+
+    public AudioClip gun, explosion;
 
     private int Score;
     private int Health;
@@ -21,11 +35,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartGame();
+        isRunning = false;
     }
 
     public void StartGame()
     {
+        GameplayUI.SetActive(true);
+
         laser.SetActive(false);
         Score = 0;
         Health = 10;
@@ -44,7 +60,7 @@ public class GameManager : MonoBehaviour
 
             // Spawn a new enemy
             GameObject alien = Instantiate(alienPrefab, randomPosition, Quaternion.identity);
-            alien.GetComponent<Alien>().SetPlayer(player);
+            alien.GetComponent<Alien>().SetPlayer(player, this);
 
             // Wait for some time before spawning again
             yield return new WaitForSeconds(2.0f);
@@ -55,6 +71,7 @@ public class GameManager : MonoBehaviour
     public void ShootLasers()
     {
         //Play the shoot sound
+        gunAudio.PlayOneShot(gun);
 
         //Show the laser and hide it quickly
         laser.SetActive(true);
@@ -68,6 +85,7 @@ public class GameManager : MonoBehaviour
                 Score++;
 
                 //Update score UI
+                scoreText.text = "SCORE\n" + Score;
 
                 //Destroy the alien
                 Destroy(hit.collider.gameObject);
@@ -76,7 +94,7 @@ public class GameManager : MonoBehaviour
                 Instantiate(hitParticle, hit.transform.position, Quaternion.identity);
 
                 //Play the sound boom!
-
+                explosionAudio.PlayOneShot(explosion);
             }
         }
     }
@@ -89,12 +107,19 @@ public class GameManager : MonoBehaviour
     public void GetDamage()
     {
         Health--;
+        //Update health UI
+        healthText.text = "HEALTH\n" + Score;
+
         if (Health <= 0)
         {
             //Game Over
             isRunning = false;
+            StopAllCoroutines();
 
             //Show the gameover UI;
+            GameplayUI.SetActive(false);
+            GameOverUI.SetActive(true);
+            finalScoreText.text = "SCORE\n" + Score;
         }
     }
 

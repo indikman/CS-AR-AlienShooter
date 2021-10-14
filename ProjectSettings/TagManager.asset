@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - alien
+  - player
   layers:
   - Default
   - TransparentFX
